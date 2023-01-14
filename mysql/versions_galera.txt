@@ -1,0 +1,6 @@
+centos7_64:26.4.8-1:86b9dd500d6bcd5ff10574caa1b17909:galera-4-26.4.8-1.el7.centos.x86_64.rpm
+centos8_64:26.4.8-1:1ca3d784afca78b975fc024dddad6a46:galera-4-26.4.8-1.el8.x86_64.rpm
+bintar_glibc_214-x86_64:26.4.8:e8d48d6172c659a8905a2e46c688340e:galera-26.4.8-glibc_214-x86_64.tar.gz
+bintar_glibc_214-i686:26.4.8:146aa90e2db1f03c553e7a801490bb70:galera-26.4.8-glibc_214-i686.tar.gz
+bintar_systemd-x86_64:26.4.8:45181dcebdca6d1d4c168526ff177010:galera-26.4.8-systemd-x86_64.tar.gz
+source:26.4.8:4e3e91e8e9deb39c28d3209b06361058:galera-26.4.8.tar.gz

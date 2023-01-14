@@ -1,0 +1,13 @@
+[ req ]
+	default_bits            = 1024
+	distinguished_name      = req_distinguished_name
+	prompt                  = no
+
+[ req_distinguished_name ]
+	C       = US
+	ST      = Someprovince
+	L       = Sometown
+	O       = none
+	OU      = none
+	CN      = localhost
+	emailAddress    = webmaster@localhost

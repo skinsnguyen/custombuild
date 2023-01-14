@@ -1,0 +1,6 @@
+[Unit]
+Description=pure-certd SNI certificate daemon
+ConditionPathExists=/usr/sbin/pure-certd
+
+[Service]
+ExecStart=/usr/sbin/pure-certd -r /usr/local/bin/pureftpd_sni.sh -s /var/run/pure-certd.sock

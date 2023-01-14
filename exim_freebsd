@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# $FreeBSD: tags/RELEASE_12_0_0/mail/exim/files/exim.in 340872 2014-01-24 00:14:07Z mat $
+#
+
+# PROVIDE: mail
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#	we make mail start late, so that things like .forward's are not
+#	processed until the system is fully operational
+
+#
+# Add the following lines to /etc/rc.conf to enable exim:
+#
+#exim_enable="YES"
+#
+# See exim(8) for flags
+#
+
+. /etc/rc.subr
+
+name=exim
+rcvar=exim_enable
+
+command=/usr/sbin/exim
+pidfile=/var/run/exim.pid
+required_files=/etc/exim.conf
+
+start_postcmd=start_postcmd
+stop_postcmd=stop_postcmd
+
+extra_commands="reload"
+
+start_postcmd()
+{
+  SPAM_PID=/var/run/spamd.pid
+  if [ -e /usr/bin/spamd ]; then /usr/bin/spamd -d -c -m 15 --ipv4 --pidfile=$SPAM_PID 1>/dev/null 2>/dev/null; fi
+}
+
+stop_postcmd()
+{
+  rm -f $pidfile
+}
+
+# read settings, set default values
+load_rc_config $name
+: ${exim_enable="YES"}
+: ${exim_flags="-bd -q30m -oP /var/run/exim.pid"}
+
+run_rc_command "$1"

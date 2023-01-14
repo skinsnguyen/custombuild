@@ -1,0 +1,28 @@
+# should be added as /etc/systemd/system/litespeed.service
+[Unit]
+Description=The LiteSpeed HTTP Server
+After=network-online.target remote-fs.target nss-lookup.target lve_namespaces.service
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/tmp/lshttpd/lshttpd.pid
+ExecStart=/usr/local/lsws/bin/lswsctrl start 
+ExecReload=/usr/local/lsws/bin/lswsctrl restart 
+ExecStop=/usr/local/lsws/bin/lswsctrl stop
+
+KillMode=none
+PrivateTmp=false
+LimitMEMLOCK=infinity
+LimitNOFILE=655350
+
+# do not want to be limited in anyway
+CPUAccounting=false
+TasksAccounting=false
+MemoryAccounting=false
+
+[Install]
+WantedBy=multi-user.target
+Alias=lsws.service
+Alias=lshttpd.service
+Alias=openlitespeed.service

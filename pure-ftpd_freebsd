@@ -1,0 +1,77 @@
+#!/bin/sh
+#1.2
+#
+# $FreeBSD: tags/RELEASE_12_0_0/ftp/pure-ftpd/files/pure-ftpd.in 430884 2017-01-08 20:42:47Z sunpoet $
+#
+
+# PROVIDE: pureftpd
+# REQUIRE: NETWORKING SERVERS
+# BEFORE: DAEMON
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable pure-ftpd:
+#
+# pureftpd_enable="yes"
+# pureftpd_flags="<set as needed>"
+#
+# Add the following lines to /etc/rc.conf to enable pure-authd daemon:
+#
+# pureftpd_authd_enable="yes"
+# pureftpd_authdscript="/full/path/to/auth_script"
+# pureftpd_authsocket="/var/run/ftpd.sock"
+#
+# Add the following lines to /etc/rc.conf to enable uploadscript daemon:
+#
+# pureftpd_upload_enable="yes"
+# pureftpd_uploadscript="/full/path/to/upload_script"
+
+. /etc/rc.subr
+
+LOG=/var/log/pureftpd.log
+DB=/etc/pureftpd.pdb
+OPTIONS="-B -A -C 15 -E -H -k 99 -L 10000:8 -O stats:${LOG} -l puredb:${DB} -p 35000:35999 -u 99 -U 133:022 -w -Z"
+OPTIONS="${OPTIONS} -Y 1 -J -S:HIGH:MEDIUM:+TLSv1:!SSLv2:+SSLv3 --extcert /var/run/pure-certd.sock"
+
+CERTD_PID=/var/run/pure-certd.pid
+CERTD_SOCK=/var/run/pure-certd.sock
+
+UPLOAD_PID=/var/run/pure-uploadscript.pid
+if [ -e /usr/local/bin/pureftpd_uploadscan.sh ]; then
+	OPTIONS="-o ${OPTIONS}"
+fi
+
+name=pureftpd
+rcvar=pureftpd_enable
+
+load_rc_config $name
+
+command=/usr/sbin/pure-ftpd
+command_args="${OPTIONS}"
+procname=pure-ftpd
+pureftpd_enable=${pureftpd_enable:-"yes"}
+pureftpd_pidfile=${pureftpd_pidfile:-"/var/run/pure-ftpd.pid"}
+
+start_postcmd=start_postcmd
+stop_postcmd=stop_postcmd
+
+start_postcmd()
+{
+	if [ -e /usr/local/bin/pureftpd_uploadscan.sh ]; then
+		/usr/sbin/pure-uploadscript -B -p ${UPLOAD_PID} -r /usr/local/bin/pureftpd_uploadscan.sh > /dev/null 2>&1
+	fi
+	if [ -e /usr/local/bin/pureftpd_sni.sh ]; then
+		/usr/sbin/pure-certd -B -p ${CERTD_PID} -r /usr/local/bin/pureftpd_sni.sh -s ${CERTD_SOCK} > /dev/null 2>&1
+	fi
+}
+
+stop_postcmd()
+{
+	if [ -s /usr/sbin/pure-uploadscript ] && [ -s ${UPLOAD_PID} ]; then
+		kill `cat ${UPLOAD_PID}` > /dev/null 2>&1
+	fi
+	if [ -s /usr/sbin/pure-certd ]; then
+		kill -9 `cat ${CERTD_PID}` > /dev/null 2>&1
+	fi
+}
+
+run_rc_command "$1"

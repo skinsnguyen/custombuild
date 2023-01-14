@@ -1,0 +1,13 @@
+#!/bin/sh
+install_user=ftp \
+install_group=ftp \
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var/run \
+--mandir=/usr/share/man \
+--without-pam \
+--disable-auth-pam \
+--enable-nls \
+--enable-dso \
+--with-modules=mod_ratio:mod_readme:mod_tls

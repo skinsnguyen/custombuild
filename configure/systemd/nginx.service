@@ -1,0 +1,21 @@
+# nginx binary startup for DirectAdmin servers
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+
+[Unit]
+Description=The nginx HTTP and reverse proxy server
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -c /etc/nginx/nginx.conf
+ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

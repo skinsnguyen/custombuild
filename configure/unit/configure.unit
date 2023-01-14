@@ -1,0 +1,16 @@
+#!/bin/sh
+./configure \
+	"--user=nginx_unit" \
+	"--group=nginx_unit" \
+	"--prefix=/usr" \
+	"--sbindir=/usr/sbin" \
+	"--state=/var/lib/unit" \
+	"--control=unix:/var/run/unit/control.sock" \
+	"--pid=/var/run/unit/unit.pid" \
+	"--log=/var/log/unit/unit.log" \
+	"--tests" \
+	"--openssl" \
+	"--modules=/usr/lib/unit/modules" \
+	"--libdir=/usr/lib" \
+	"--tmp=/tmp" \
+	"--cc-opt=-D FD_SETSIZE=32768"

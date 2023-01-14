@@ -1,0 +1,38 @@
+#!/bin/sh
+./configure \
+	--prefix=/usr/local/php73 \
+	--program-suffix=73 \
+	--enable-fpm \
+	--with-fpm-systemd \
+	--with-litespeed \
+	--with-config-file-scan-dir=/usr/local/php73/lib/php.conf.d \
+	--with-curl \
+	--with-gd \
+	--with-gettext \
+	--with-jpeg-dir=/usr/local/lib \
+	--with-freetype-dir=/usr/local/lib \
+	--with-libxml-dir=/usr/local/lib \
+	--with-kerberos \
+	--with-openssl \
+	--with-mhash \
+	--with-mysql-sock=/var/lib/mysql/mysql.sock \
+	--with-mysqli=mysqlnd \
+	--with-pdo-mysql=mysqlnd \
+	--with-pear \
+	--with-png-dir=/usr/local/lib \
+	--with-sodium=/usr/local \
+	--with-webp-dir=/usr/local/lib \
+	--with-xsl \
+	--with-zlib \
+	--enable-zip \
+	--without-libzip \
+	--with-iconv=/usr/local \
+	--enable-bcmath \
+	--enable-calendar \
+	--enable-exif \
+	--enable-ftp \
+	--enable-sockets \
+	--enable-soap \
+	--enable-mbstring \
+	--with-icu-dir=/usr/local/icu \
+	--enable-intl

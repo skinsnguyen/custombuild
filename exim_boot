@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# exim      This shell script takes care of starting and stopping
+#               exim.
+#
+# chkconfig: 2345 80 30
+# description: Mail Transfer Agent
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+EXIM_OPTS=
+DAEMON="yes"
+QUEUE="15m"
+[ -f /etc/sysconfig/exim ] && . /etc/sysconfig/exim
+[ "$DAEMON" = yes ] && EXIM_OPTS="$EXIM_OPTS -bd"
+[ -n "$QUEUE" ] && EXIM_OPTS="$EXIM_OPTS -q$QUEUE"
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	# Start daemons.
+	echo -n "Starting exim: "
+	/usr/sbin/exim $EXIM_OPTS -oP /var/run/exim.pid
+ 	echo
+	touch /var/lock/subsys/exim
+
+	if [ -e /usr/bin/spamd ]; then /usr/bin/spamd -d -c -m 15 --ipv4 1>/dev/null 2>/dev/null; fi
+
+	;;
+  stop)
+	# Stop daemons.
+	echo -n "Shutting down exim: "
+	if [ -e /var/run/exim.pid ]; then kill `cat /var/run/exim.pid`; fi
+	echo
+	rm -f /var/lock/subsys/exim
+
+	if [ -e /usr/bin/spamd ]; then killall -9 spamd 1>/dev/null 2>/dev/null; fi
+	;;
+  restart)
+        $0 stop
+        sleep 3
+        $0 start
+        ;;
+  reload)
+	if [ -e /var/run/exim.pid ]; then kill -HUP `cat /var/run/exim.pid`; fi
+	;;
+  condrestart)
+	if [ -f /var/lock/subsys/exim ] ; then
+	    $0 restart
+	fi
+	;;
+  status)
+	status exim
+	;;
+  *)
+	echo "Usage: exim {start|stop|restart|reload|condrestart|status}"
+	exit 1
+esac
+
+exit 0

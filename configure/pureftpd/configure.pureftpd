@@ -1,0 +1,13 @@
+#!/bin/sh
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--with-certfile=/etc/pure-ftpd.pem \
+--with-tls \
+--with-puredb \
+--with-quotas \
+--with-altlog \
+--with-ftpwho \
+--with-ratios \
+--with-welcomemsg \
+--with-uploadscript

@@ -1,0 +1,7 @@
+extProcessor lsphp|PHP_SHORTRELEASE| {
+    type                            lsapi 
+    address                         uds://tmp/lshttpd/lsphp|PHP_SHORTRELEASE|.sock 
+    autoStart                       1
+    path                            /usr/local/php|PHP_SHORTRELEASE|/bin/lsphp
+	include 						/usr/local/lsws/conf/httpd-phplimits.conf
+}

@@ -1,0 +1,40 @@
+--- /etc/exim.conf.orig 2008-08-22 14:31:13.000000000 -0600
++++ /etc/exim.conf      2008-08-22 16:38:34.479800272 -0600
+@@ -608,9 +608,10 @@
+   allow_filter
+   no_check_local_user
+   condition = "${if exists{/etc/virtual/${domain}/filter}{yes}{no}}"
+-  user = "mail"
++  user = "${lookup{$domain}lsearch{/etc/virtual/domainowners}{$value}}"
++  group = "mail"
+   file = /etc/virtual/${domain}/filter
+-  file_transport = address_file
++  directory_transport = address_file
+   pipe_transport = virtual_address_pipe
+   retry_use_local_part
+   no_verify
+@@ -770,7 +771,10 @@
+   driver = appendfile
+   delivery_date_add
+   envelope_to_add
+-  file = /var/mail/$local_part
++  directory = /home/$local_part/Maildir/
++  directory_mode = 770
++  create_directory = true
++  maildir_format
+   group = mail
+   mode = 0660
+   return_path_add
+@@ -782,9 +786,10 @@
+   driver = appendfile
+   create_directory
+   delivery_date_add
+-  directory_mode = 700
++  directory_mode = 770
+   envelope_to_add
+-  file = /var/spool/virtual/${domain}/${local_part}
++  directory = /home/${lookup{$domain}lsearch*{/etc/virtual/domainowners}{$value}}/imap/${domain}/${local_part}/Maildir
++  maildir_format
+   group = mail
+   mode = 660
+   return_path_add

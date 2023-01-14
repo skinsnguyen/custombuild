@@ -1,0 +1,30 @@
+[Unit]
+Description=Multi-user redis persistent key-value database
+After=network.target
+Documentation=http://redis.io/documentation, man:redis-server(1)
+
+[Service]
+User=%i
+Group=%i
+ExecStartPre=-/bin/mkdir -p ${HOME}/.redis/db/
+ExecStartPost=-+/bin/sh -c "if [ -d /sys/fs/cgroup/user.slice ]; then mkdir -p /sys/fs/cgroup/user.slice/user-$(id -u ${USER}).slice/directadmin-exec.scope; echo $MAINPID > /sys/fs/cgroup/user.slice/user-$(id -u ${USER}).slice/directadmin-exec.scope/cgroup.procs; systemctl start user-$(id -u ${USER}).slice; fi"
+ExecStart=/usr/local/bin/redis-server --include /usr/local/directadmin/data/users/${USER}/redis.conf --supervised systemd --dir ${HOME}/.redis/db/ --port 0 --unixsocket ${HOME}/.redis/redis.sock --unixsocketperm 770
+Type=notify
+RuntimeDirectory=redis
+RuntimeDirectoryMode=0755
+
+UMask=007
+LimitNOFILE=65535
+
+NoNewPrivileges=true
+CapabilityBoundingSet=CAP_SETGID CAP_SETUID CAP_SYS_RESOURCE
+MemoryDenyWriteExecute=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,77 @@
+#!/bin/sh
+#VERSION=1.1
+#
+# Startup script for Pure-FTPD
+#
+# chkconfig: 345 85 15
+# description: Pure-FTPD FTP server
+# processname: pure-ftpd
+# config: /etc/pure-ftpd.conf
+#
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+LOG=/var/log/pureftpd.log
+DB=/etc/pureftpd.pdb
+OPTIONS="-B -A -C 15 -E -H -k 99 -L 10000:8 -O stats:${LOG} -l puredb:${DB} -p 35000:35999 -u 99 -U 133:022 -w -Z"
+OPTIONS="${OPTIONS} -Y 1 -J -S:HIGH:MEDIUM:+TLSv1:!SSLv2:+SSLv3 --extcert /var/run/pure-certd.sock"
+
+UPLOAD_PID=/var/run/pure-uploadscript.pid
+if [ -e /usr/local/bin/pureftpd_uploadscan.sh ]; then
+	OPTIONS="-o ${OPTIONS}"
+fi
+
+CERTD_PID=/var/run/pure-certd.pid
+CERTD_SOCK=/var/run/pure-certd.sock
+
+if [ -f /etc/sysconfig/pure-ftpd ]; then
+      . /etc/sysconfig/pure-ftpd
+fi
+
+PATH="$PATH:/usr/local/sbin"
+
+# See how we were called.
+case "$1" in
+	start)
+		echo -n "Starting pure-ftpd: "
+		daemon /usr/sbin/pure-ftpd ${OPTIONS}
+		echo
+		touch /var/lock/subsys/pure-ftpd
+
+		if [ -e /usr/local/bin/pureftpd_uploadscan.sh ]; then
+			/usr/sbin/pure-uploadscript -B -p ${UPLOAD_PID} -r /usr/local/bin/pureftpd_uploadscan.sh > /dev/null 2>&1
+		fi
+		if [ -e /usr/local/bin/pureftpd_sni.sh ]; then
+                        /usr/sbin/pure-certd -B -p ${CERTD_PID} -r /usr/local/bin/pureftpd_sni.sh -s ${CERTD_SOCK} > /dev/null 2>&1
+                fi
+                ;;
+	stop)
+		echo -n "Shutting down pure-ftpd: "
+		killproc pure-ftpd
+		echo
+		rm -f /var/lock/subsys/pure-ftpd
+
+		if [ -s /usr/sbin/pure-uploadscript ]; then
+			killall -9 pure-uploadscript > /dev/null 2>&1
+		fi
+		if [ -s /usr/sbin/pure-certd ]; then
+			killall -9 pure-certd > /dev/null 2>&1
+		fi
+		;;
+	status)
+		status pure-ftpd
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	reread|reload)
+		echo -n "Re-reading pure-ftpd config: "
+		killproc pure-ftpd -HUP
+		echo
+		;;
+	*)
+		echo -n "Usage: $0 {start|stop|restart|status|reread|reload"
+		exit 1
+esac
+exit 0

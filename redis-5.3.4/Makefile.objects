@@ -1,0 +1,26 @@
+redis.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis.c -o redis.lo 
+redis_commands.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_commands.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_commands.c -o redis_commands.lo 
+library.lo: /usr/local/directadmin/custombuild/redis-5.3.4/library.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/library.c -o library.lo 
+redis_session.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_session.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_session.c -o redis_session.lo 
+redis_array.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_array.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_array.c -o redis_array.lo 
+redis_array_impl.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_array_impl.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_array_impl.c -o redis_array_impl.lo 
+redis_cluster.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_cluster.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_cluster.c -o redis_cluster.lo 
+cluster_library.lo: /usr/local/directadmin/custombuild/redis-5.3.4/cluster_library.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/cluster_library.c -o cluster_library.lo 
+redis_sentinel.lo: /usr/local/directadmin/custombuild/redis-5.3.4/redis_sentinel.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/redis_sentinel.c -o redis_sentinel.lo 
+sentinel_library.lo: /usr/local/directadmin/custombuild/redis-5.3.4/sentinel_library.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/usr/local/directadmin/custombuild/redis-5.3.4 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -c /usr/local/directadmin/custombuild/redis-5.3.4/sentinel_library.c -o sentinel_library.lo 
+$(phplibdir)/redis.la: ./redis.la
+	$(LIBTOOL) --mode=install cp ./redis.la $(phplibdir)
+
+./redis.la: $(shared_objects_redis) $(REDIS_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) -shared $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS)  -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_redis) $(REDIS_SHARED_LIBADD)
+

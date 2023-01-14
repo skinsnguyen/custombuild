@@ -1,0 +1,14 @@
+# pure-ftpd binary startup for DirectAdmin servers
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+[Unit]
+Description=Pure-FTPd FTP server
+Requires=pure-certd.service
+After=syslog.target network.target pure-certd.service
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/pure-ftpd /etc/pure-ftpd.conf
+
+[Install]
+WantedBy=multi-user.target

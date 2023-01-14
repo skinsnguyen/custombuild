@@ -1,0 +1,9 @@
+/var/log/dovecot*.log {
+	missingok
+	notifempty
+	delaycompress
+	sharedscripts
+	postrotate
+		kill -s 0 `cat /var/run/dovecot/master.pid` || kill -s USR1 `cat /var/run/dovecot/master.pid`
+	endscript
+}

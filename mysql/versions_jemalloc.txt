@@ -1,0 +1,10 @@
+centos5_32:3.6.0-2:12875df63d53477af2652a4bfc2e19a5:jemalloc-3.6.0-2.el5.i386.rpm
+centos5_32_dev:3.6.0-2:325533748799e91114dc4d0fef85a981:jemalloc-devel-3.6.0-2.el5.i386.rpm
+centos5_64:3.6.0-2:ab6925672a7f26e07ce4dd23cb921a83:jemalloc-3.6.0-2.el5.x86_64.rpm
+centos5_64_dev:3.6.0-2:8c22604d9ef5aeae980222c05d855904:jemalloc-devel-3.6.0-2.el5.x86_64.rpm
+centos6_32:3.6.0-1:4fae8912c72baade9da7c58f69153fb9:jemalloc-3.6.0-1.el6.i686.rpm
+centos6_32_dev:3.6.0-1:b7138f59223c9c136cc2752cccf591c0:jemalloc-devel-3.6.0-1.el6.i686.rpm
+centos6_64:3.6.0-1:7c9e99cbae8e9892442b6b7b12403c12:jemalloc-3.6.0-1.el6.x86_64.rpm
+centos6_64_dev:3.6.0-1:ba106480e1146da5f1296b18e0622a5a:jemalloc-devel-3.6.0-1.el6.x86_64.rpm
+centos7_64:3.6.0-1:c5256cded14f1750fe8ce3be9382a10c:jemalloc-3.6.0-1.el7.x86_64.rpm
+centos7_64_dev:3.6.0-1:ebcf651bec16db430f21bc560a018f82:jemalloc-devel-3.6.0-1.el7.x86_64.rpm

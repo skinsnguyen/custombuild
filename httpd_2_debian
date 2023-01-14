@@ -1,0 +1,137 @@
+#!/bin/bash
+#
+# Startup script for the Apache Web Server
+#
+# chkconfig: - 85 15
+# description: Apache is a World Wide Web server.  It is used to serve \
+#	       HTML files and CGI.
+# processname: httpd
+# pidfile: /var/run/httpd.pid
+# config: /etc/httpd/conf/access.conf
+# config: /etc/httpd/conf/httpd.conf
+# config: /etc/httpd/conf/srm.conf
+
+### BEGIN INIT INFO
+# Provides:          httpd
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: httpd
+# Description:       Apache httpd daemon
+### END INIT INFO
+
+# This will prevent initlog from swallowing up a pass-phrase prompt if
+# mod_ssl needs a pass-phrase from the user.
+INITLOG_ARGS=""
+
+ulimit -HSn 32768
+
+# Path to the apachectl script, server binary, and short-form for messages.
+PID=/var/run/httpd.pid
+apachectl=/usr/sbin/apachectl
+httpd=/usr/sbin/httpd
+prog=httpd
+RETVAL=0
+
+# check for 1.3 configuration
+check13 () {
+        CONFFILE=/etc/httpd/conf/httpd.conf
+        GONE="(ServerType|BindAddress|Port|AddModule|ClearModuleList|"
+        GONE="${GONE}AgentLog|RefererLog|RefererIgnore|FancyIndexing|"
+        GONE="${GONE}AccessConfig|ResourceConfig)"
+        if grep -Eiq "^[[:space:]]*($GONE)" $CONFFILE; then
+                echo
+                echo 1>&2 " Apache 1.3 configuration directives found"
+                echo 1>&2 " please read @docdir@/migration.html"
+                failure "Apache 1.3 config directives test"
+                echo
+                exit 1
+        fi
+}
+
+
+# The semantics of these two functions differ from the way apachectl does
+# things -- attempting to start while running is a failure, and shutdown
+# when not running is also a failure.  So we just do it the way init scripts
+# are expected to behave here.
+start() {
+        echo -n $"Starting $prog: "
+	check13 || exit 1
+        $httpd -k start -DSSL
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && touch /var/lock/subsys/httpd
+        return $RETVAL
+}
+stop() {
+	echo -n $"Stopping $prog: "
+	if [ -e $PID ]; then kill `cat $PID`; fi
+	RETVAL=$?
+	echo
+	[ $RETVAL = 0 ] && rm -f /var/lock/subsys/httpd /var/run/httpd.pid
+}
+waitforexit() {
+	count=${2:-30}
+	while [ 0$count -gt 0 ]
+	do
+		PIDS=`ps -C$prog --no-heading e | grep $httpd` || break
+		PIDS=`echo "$PIDS" | awk '{print $1}' | tr '\n' ' '`
+		echo Remaining processes: $PIDS
+		stop
+		sleep 2
+		count=`expr $count - 1`
+	done
+	if [ 0$count -eq 0 ];
+	then
+		echo Remaining processes: $PIDS
+		return 1
+	fi
+	return 0
+}
+
+
+reload() {
+	echo -n $"Reloading $prog: "
+	check13 || exit 1
+	if [ -e $PID ]; then kill -HUP `cat $PID`; fi
+	RETVAL=$?
+	echo
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+        status $httpd
+	RETVAL=$?
+	;;
+  restart)
+	stop
+	waitforexit "httpd" 20
+	start
+	;;
+  condrestart)
+	if [ -f /var/run/httpd.pid ] ; then
+		stop
+		start
+	fi
+	;;
+  reload)
+        reload
+	;;
+  graceful|help|configtest)
+	$apachectl $@
+	RETVAL=$?
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|condrestart|reload|status|fullstatus|graceful|help|configtest}"
+	exit 1
+esac
+
+exit $RETVAL

@@ -1,0 +1,20 @@
+[Unit]
+Description=Dovecot IMAP/POP3 email server activation socket
+
+[Socket]
+#dovecot expects separate IPv4 and IPv6 sockets
+BindIPv6Only=ipv6-only
+ListenStream=0.0.0.0:110
+ListenStream=[::]:110
+ListenStream=0.0.0.0:143
+ListenStream=[::]:143
+ListenStream=0.0.0.0:993
+ListenStream=[::]:993
+ListenStream=0.0.0.0:995
+ListenStream=[::]:995
+ListenStream=0.0.0.0:4190
+ListenStream=[::]:4190
+KeepAlive=true
+
+[Install]
+WantedBy=sockets.target

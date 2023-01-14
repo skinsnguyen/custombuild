@@ -1,0 +1,8 @@
+#!/bin/sh
+"./configure" \
+"--prefix=/usr/local/suphp" \
+"--sysconfdir=/usr/local/suphp/etc/" \
+"--with-apache-user=apache" \
+"--with-setid-mode=paranoid" \
+"--with-apxs=/usr/sbin/apxs" \
+"--disable-checkpath"

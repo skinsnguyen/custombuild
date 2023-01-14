@@ -1,0 +1,15 @@
+[Unit]
+Description=Spamassassin daemon
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/spamd.pid
+ExecStart=/usr/bin/spamd --pidfile /var/run/spamd.pid -d -c -m 15 --ipv4
+StandardOutput=syslog
+StandardError=syslog
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+Alias=spamd.service

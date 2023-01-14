@@ -1,0 +1,17 @@
+# exim binary startup for DirectAdmin servers
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+
+[Unit]
+Description=Exim Mail Transport Agent
+After=network.target
+Conflicts=sendmail.service postfix.service
+
+[Service]
+PrivateTmp=true
+Environment=QUEUE=1h
+ExecStart=/usr/sbin/exim -bd -q${QUEUE}
+ExecReload=/bin/sh -c 'kill -HUP ${MAINPID}'
+
+[Install]
+WantedBy=multi-user.target

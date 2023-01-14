@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# Init file for Dovecot IMAP daemon
+#
+### BEGIN INIT INFO
+# Provides:          dovecot
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: dovecot
+# Description:       dovecot pop & imap daemon
+### END INIT INFO
+#
+# description: Dovecot IMAP Daemon
+#
+# processname: dovecot
+# config: /etc/dovecot.conf
+# pidfile: /var/run/dovecot
+
+[ -x /usr/sbin/dovecot ] || exit 1
+
+PID=/var/run/dovecot/master.pid
+RETVAL=0
+
+ulimit -HSn 32768
+
+start() {
+        echo -n $"Starting dovecot: "
+        /usr/sbin/dovecot
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/dovecot
+        return $RETVAL
+}
+
+stop() {
+        echo -n $"Shutting down dovecot: "
+	if [ -e $PID ]; then kill `cat $PID`; fi
+	RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/dovecot
+	sleep 1
+        return $RETVAL
+}
+
+restart(){
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  condrestart)
+        [ -e /var/lock/subsys/dovecot ] && restart
+        RETVAL=$?
+        ;;
+  status)
+        status dovecot
+        RETVAL=$?
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+        RETVAL=1
+esac
+
+exit $RETVAL

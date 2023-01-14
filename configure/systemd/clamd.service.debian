@@ -1,0 +1,18 @@
+# clamav binary startup for DirectAdmin servers
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+
+[Unit]
+Description = Generic clamav scanner daemon
+After = syslog.target nss-lookup.target network.target
+
+[Service]
+Type = simple
+ExecStartPre=-/bin/mkdir -p /var/run/clamd
+ExecStartPre=-/bin/chown -R clamav:clamav /var/run/clamd
+ExecStart = /usr/local/sbin/clamd --foreground=yes
+Restart = on-failure
+PrivateTmp = true
+
+[Install]
+WantedBy = multi-user.target

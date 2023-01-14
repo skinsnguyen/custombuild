@@ -1,0 +1,29 @@
+#!/bin/sh
+./configure \
+	--with-apxs2 \
+	--with-config-file-scan-dir=/usr/local/lib/php.conf.d \
+	--with-curl \
+	--enable-gd \
+	--with-gettext \
+	--with-jpeg \
+	--with-freetype \
+	--with-kerberos \
+	--with-openssl \
+	--with-mhash \
+	--with-mysql-sock=/var/lib/mysql/mysql.sock \
+	--with-mysqli=mysqlnd \
+	--with-pdo-mysql=mysqlnd \
+	--with-sodium=/usr/local \
+	--with-webp \
+	--with-xsl \
+	--with-zlib \
+	--with-zip \
+	--with-iconv=/usr/local \
+	--enable-bcmath \
+	--enable-calendar \
+	--enable-exif \
+	--enable-ftp \
+	--enable-sockets \
+	--enable-soap \
+	--enable-mbstring \
+	--enable-intl

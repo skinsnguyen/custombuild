@@ -1,0 +1,35 @@
+# mysql binary startup for DirectAdmin servers
+# For example, if you want to increase mysql's open-files-limit to 10000,
+# you need to increase systemd's LimitNOFILE setting like:
+#       [Service]
+#       LimitNOFILE=10000
+
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+
+[Unit]
+Description=MySQL database server
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=mysql
+Group=mysql
+RuntimeDirectory=mysqld
+RuntimeDirectoryMode=0755
+PIDFile=/usr/local/mysql/data/mysqld.pid
+
+ExecStart=/usr/local/mysql/bin/mysqld_safe --datadir=/usr/local/mysql/data --pid-file=/usr/local/mysql/data/mysqld.pid --socket=/usr/local/mysql/data/mysql.sock
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=300
+
+# Place temp files in a secure directory, not /tmp
+PrivateTmp=true
+
+LimitMEMLOCK=infinity
+LimitNOFILE=655350
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# $FreeBSD: tags/RELEASE_12_0_0/mail/dovecot/files/dovecot.in 477601 2018-08-19 21:00:17Z ler $
+#
+
+# PROVIDE: dovecot
+# BEFORE:  mail
+# KEYWORD: shutdown
+
+# dovecot_enable (bool):	Set it to YES to enable dovecot
+#				Default: NO
+# dovecot_config (str):		Path to dovecot.conf
+#				Default: /etc/dovecot.conf
+#				Set it to a space-separated list to start
+#				multiple dovecot instances
+# dovecot_flags (str):		Extra flags to pass to dovecot
+#				Default: empty
+
+# Define dovecot_* variables in one of these files:
+#	/etc/rc.conf
+#	/etc/rc.conf.local
+#	/etc/rc.conf.d/dovecot
+
+. /etc/rc.subr
+
+name=dovecot
+rcvar=dovecot_enable
+
+# read configuration and set defaults
+load_rc_config ${name}
+: ${dovecot_enable:="YES"}
+: ${dovecot_config:="/etc/${name}.conf"}
+
+command="/usr/sbin/${name}"
+restart_cmd="restart_cmd"
+extra_commands="reload"
+
+restart_cmd()
+{	# Overriding makes rc.subr run this once for each instance
+	run_rc_command stop
+	run_rc_command start
+}
+
+pidfile="/var/run/dovecot/master.pid"
+run_rc_command "$1"

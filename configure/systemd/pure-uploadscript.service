@@ -1,0 +1,6 @@
+[Unit]
+Description=pure-ftpd upload scan script
+ConditionPathExists=/usr/sbin/pure-uploadscript
+
+[Service]
+ExecStart=/usr/sbin/pure-uploadscript -r /usr/local/bin/pureftpd_uploadscan.sh

@@ -1,0 +1,2 @@
+#!/bin/sh
+./configure --prefix=/usr/local --with-libxml-prefix=/usr/local

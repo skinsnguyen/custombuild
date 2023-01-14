@@ -1,0 +1,34 @@
+#!/bin/sh
+./configure --enable-embed \
+	--prefix=/usr/local/php74 \
+	--program-suffix=74 \
+	--enable-fpm \
+	--with-fpm-systemd \
+	--enable-litespeed \
+	--with-config-file-scan-dir=/usr/local/php74/lib/php.conf.d \
+	--with-curl \
+	--enable-gd \
+	--with-gettext \
+	--with-jpeg \
+	--with-freetype \
+	--with-kerberos \
+	--with-openssl \
+	--with-mhash \
+	--with-mysql-sock=/var/lib/mysql/mysql.sock \
+	--with-mysqli=mysqlnd \
+	--with-pdo-mysql=mysqlnd \
+	--with-pear \
+	--with-sodium=/usr/local \
+	--with-webp \
+	--with-xsl \
+	--with-zlib \
+	--with-zip \
+	--with-iconv-dir=/usr \
+	--enable-bcmath \
+	--enable-calendar \
+	--enable-exif \
+	--enable-ftp \
+	--enable-sockets \
+	--enable-soap \
+	--enable-mbstring \
+	--enable-intl

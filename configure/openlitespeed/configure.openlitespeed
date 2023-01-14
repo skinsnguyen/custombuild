@@ -1,0 +1,6 @@
+#!/bin/sh
+./configure \
+	--with-group=apache \
+	--with-user=apache \
+	--with-iptogeo2 \
+	--enable-iptogeo=no

@@ -1,0 +1,19 @@
+# proftpd binary startup for DirectAdmin servers
+# To reload systemd daemon after changes to this file:
+# systemctl --system daemon-reload
+
+[Unit]
+Description = ProFTPD FTP Server
+After = network.target nss-lookup.target local-fs.target remote-fs.target
+
+[Service]
+Type=forking
+Environment = PROFTPD_OPTIONS=
+ExecStartPre=-/usr/bin/mkdir -p /var/run/proftpd
+ExecStart=/usr/sbin/proftpd $PROFTPD_OPTIONS
+ExecReload=/bin/kill -HUP $MAINPID
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+
+[Install]
+WantedBy = multi-user.target

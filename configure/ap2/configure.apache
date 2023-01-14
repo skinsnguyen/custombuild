@@ -1,0 +1,43 @@
+#!/bin/sh
+"./configure" \
+	"--prefix=/etc/httpd" \
+	"--exec-prefix=/etc/httpd" \
+	"--bindir=/usr/bin" \
+	"--sbindir=/usr/sbin" \
+	"--sysconfdir=/etc/httpd/conf" \
+	"--enable-so" \
+	"--enable-dav" \
+	"--enable-dav-fs" \
+	"--enable-dav-lock" \
+	"--enable-suexec" \
+	"--enable-deflate" \
+	"--enable-unique-id" \
+	"--enable-cgi" \
+	"--disable-cgid" \
+	"--enable-mods-static=most" \
+	"--enable-mpms-shared=all" \
+	"--with-suexec-safedir=/usr/local/safe-bin" \
+	"--with-suexec-caller=apache" \
+	"--with-suexec-docroot=/" \
+	"--with-suexec-gidmin=100" \
+	"--with-suexec-logfile=/var/log/httpd/suexec_log" \
+	"--with-suexec-uidmin=100" \
+	"--with-suexec-userdir=public_html" \
+	"--with-suexec-bin=/usr/sbin/suexec" \
+	"--with-included-apr" \
+	"--with-pcre=/usr/local" \
+	"--includedir=/usr/include/apache" \
+	"--libexecdir=/usr/lib/apache" \
+	"--libdir=/usr/lib/apache" \
+	"--mandir=/usr/share/man" \
+	"--datadir=/var/www" \
+	"--localstatedir=/var" \
+	"--enable-logio" \
+	"--enable-ssl" \
+	"--enable-rewrite" \
+	"--enable-proxy" \
+	"--enable-expires" \
+	"--enable-reqtimeout" \
+	"--with-ssl=/usr" \
+	"--disable-md" \
+	"--enable-headers"

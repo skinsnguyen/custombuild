@@ -1,0 +1,10 @@
+extProcessor lsphpwebapps {
+    type                            lsapi 
+    address                         uds://tmp/lshttpd/lsphpwebapps.sock 
+    autoStart                       2
+    path                            /usr/local/php|PHP_SHORTRELEASE|/bin/lsphp
+    runOnStartUp                    3
+    extUser                         webapps
+    extGroup                        webapps
+	include 						/usr/local/lsws/conf/httpd-phplimits.conf
+}

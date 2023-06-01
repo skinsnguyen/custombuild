@@ -1614,7 +1614,7 @@ else
 fi
 DOWNLOADSERVER_OPT=`getOpt downloadserver ${DOWNLOADSERVER_DEF}`
 UNOFFICIAL_MIRRORS_OPT=`getOpt unofficial_mirrors ${UNOFFICIAL_MIRRORS_DEF}`
-DOWNLOADSERVERS_OFFICIAL_LIST="files-fi.directadmin.com files-fr.directadmin.com files-lt.directadmin.com files-de.directadmin.com files-sg.directadmin.com files-ca.directadmin.com"
+DOWNLOADSERVERS_OFFICIAL_LIST="files.directadmin.com files-lt.directadmin.com files-de.directadmin.com files-sg.directadmin.com files-ca.directadmin.com"
 DOWNLOADSERVERS_UNOFFICIAL_HTTPS_LIST="files6.directadmin.com files9.directadmin.com files11.directadmin.com directadmin.mirror.liteserver.nl damirror.unix-solutions.be mirror.serverion.com damirror.pars.host mirrors.ereznet.co.il mirror.ihost.md directadmin.mirrors.misaka.one directadmin.hostmark.pl damirror.cj2.nl"
 #We have spacing at the beginning/end to let grep work fine with these
 DOWNLOADSERVERS_HTTPS_LIST=" files1.directadmin.com ${DOWNLOADSERVERS_OFFICIAL_LIST} ${DOWNLOADSERVERS_UNOFFICIAL_HTTPS_LIST} "

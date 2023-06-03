@@ -82,9 +82,9 @@ php70:7.0.33:
 php71:7.1.33:
 php72:7.2.34:
 php73:7.3.33:
-php74:7.4.30:
-php80:8.0.23:
-php81:8.1.10:
+php74:7.4.33:
+php80:8.0.28:
+php81:8.1.17:
 php82:8.2.4:
 phpmyadmin4:4.9.10-all-languages:
 phpmyadmin5:5.2.0-all-languages:

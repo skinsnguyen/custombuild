@@ -1,0 +1,20 @@
+--- majordomo.pl.orig	2013-05-09 15:39:12.000000000 +0200
++++ majordomo.pl	2013-05-09 15:35:37.000000000 +0200
+@@ -95,14 +95,14 @@
+     local($_) = shift;
+     1 while s/\([^\(\)]*\)//g; 		# strip comments
+     1 while s/"[^"]*"\s//g;		# strip comments"
+-    split(/,/);				# split into parts
+-    foreach (@_) {
++    my @x = split(/,/);                                # split into parts
++    foreach (@x) {
+ 	1 while s/.*<(.*)>.*/$1/;
+ 	s/^\s+//;
+ 	s/\s+$//;
+     }
+ 
+-    @_;
++    @x;
+ }
+ 
+ # Check to see if a list is valid.  If it is, return the validated list

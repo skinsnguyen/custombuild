@@ -1,0 +1,10 @@
++++ b/modules/fcgid/fcgid_proc_unix.c
+@@ -405,7 +405,7 @@ apr_status_t proc_spawn_process(const char *cmdline, fcgid_proc_info *procinfo,
+     if (rv != APR_SUCCESS) {
+         memset(&procnode->proc_id, 0, sizeof(procnode->proc_id));
+         ap_log_error(APLOG_MARK, APLOG_ERR, rv, procinfo->main_server,
+-                     "mod_fcgid: can't run %s", wargv[0]);
++                     "mod_fcgid: can't run %s (uid: %d ; gid: %d)", wargv[0], procinfo->uid, procinfo->gid);
+     }
+ 
+     return rv;

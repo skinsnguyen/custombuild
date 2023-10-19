@@ -1,0 +1,13 @@
+diff --git a/modules/fcgid/fcgid_global.h.orig b/modules/fcgid/fcgid_global.h
+index d52a2fb..4779758 100644
+--- a/modules/fcgid/fcgid_global.h.orig
++++ b/modules/fcgid/fcgid_global.h
+@@ -52,7 +52,7 @@ APLOG_USE_MODULE(fcgid);
+  *   wherever possible
+  */
+ #ifndef FCGID_CMDLINE_MAX
+-#define FCGID_CMDLINE_MAX (FCGID_PATH_MAX + 256)
++#define FCGID_CMDLINE_MAX (FCGID_PATH_MAX + 1280)
+ #endif
+ 
+ #define fcgid_min(a,b)    (((a) < (b)) ? (a) : (b))

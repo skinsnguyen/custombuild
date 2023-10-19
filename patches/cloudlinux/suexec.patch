@@ -1,0 +1,48 @@
+diff -rupN httpd-2.2.22-old/support/Makefile.in httpd-2.2.22-new/support/Makefile.in
+--- httpd-2.2.22-old/support/Makefile.in	2011-04-16 15:09:47.000000000 -0400
++++ httpd-2.2.22-new/support/Makefile.in	2012-03-06 04:50:51.000000000 -0500
+@@ -60,7 +60,7 @@ checkgid: $(checkgid_OBJECTS)
+ 
+ suexec_OBJECTS = suexec.lo
+ suexec: $(suexec_OBJECTS)
+-	$(LINK) $(suexec_OBJECTS)
++	$(LINK) $(suexec_OBJECTS) -ldl
+ 
+ htcacheclean_OBJECTS = htcacheclean.lo
+ htcacheclean: $(htcacheclean_OBJECTS)
+diff -rupN httpd-2.2.22-old/support/suexec.c httpd-2.2.22-new/support/suexec.c
+--- httpd-2.2.22-old/support/suexec.c	2011-02-14 15:36:12.000000000 -0500
++++ httpd-2.2.22-new/support/suexec.c	2012-02-14 09:19:00.000000000 -0500
+@@ -55,6 +55,8 @@
+ #include <grp.h>
+ #endif
+ 
++#include <dlfcn.h>
++
+ /*
+  ***********************************************************************
+  * There is no initgroups() in QNX, so I believe this is safe :-)
+@@ -466,6 +471,23 @@ int main(int argc, char *argv[])
+         exit(108);
+     }
+ 
++    void *lib_handle;
++    lib_handle = dlopen("liblve.so.0", RTLD_LAZY);
++    if (lib_handle) {
++        char *error;
++        char error_msg[8192];
++        int (*jail)(struct passwd *, char*) = dlsym(lib_handle, "jail");
++        if ((error = dlerror()) != NULL) {
++            log_err("failed to init LVE library %s\n", error);
++            exit(130);
++        }
++        int result = jail(pw, error_msg); 
++        if (result < 0) {
++            log_err("SecureLVE jail error %s\n", error_msg);
++            exit(131);
++        }
++    }
++
+     /*
+      * Change UID/GID here so that the following tests work over NFS.
+      *

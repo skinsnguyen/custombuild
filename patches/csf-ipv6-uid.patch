@@ -1,0 +1,23 @@
+--- /usr/sbin/csf.orig	2023-04-18 12:02:42.000000000 +0200
++++ /usr/sbin/csf	2023-05-11 15:41:10.674793278 +0200
+@@ -3663,11 +3663,20 @@
+ 			} else {
+ 				if ($chain) {
+ 					&syscommand(__LINE__,"$iptables $config{IPTABLESWAIT} $verbose -A $chainout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++					if ($config{IPV6}) {
++						&syscommand(__LINE__,"$config{IP6TABLES} $config{IPTABLESWAIT} $verbose -A $chainout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++					}
+ 				} else {
+ 					if ($delete) {
+ 						&syscommand(__LINE__,"$iptables $config{IPTABLESWAIT} $verbose -D $localout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++						if ($config{IPV6}) {
++							&syscommand(__LINE__,"$config{IP6TABLES} $config{IPTABLESWAIT} $verbose -D $localout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++						}
+ 					} else {
+ 						&syscommand(__LINE__,"$iptables $config{IPTABLESWAIT} $verbose $inadd $localout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++						if ($config{IPV6}) {
++							&syscommand(__LINE__,"$config{IP6TABLES} $config{IPTABLESWAIT} $verbose $inadd $localout $lineout $protocol $dport -m owner $uid $gid -j $pktout");
++						}
+ 					}
+ 				}
+ 			}

@@ -234,7 +234,7 @@ if [ -z "${HOSTNAME}" ]; then
 fi
 
 #There are used in other sections, so must be executed everytime
-PHP1_RELEASE_SET="5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2"
+PHP1_RELEASE_SET="5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4"
 PHP1_SHORTRELEASE_SET="`echo ${PHP1_RELEASE_SET} | tr -d '.'`"
 
 is_cloudlinux_solo() {
@@ -10455,7 +10455,7 @@ doExtensions_build() {
 
 		if [ -e ${EXTENSION_INT_EXT_INI} ]; then
 			echo "extension_dir=${EXTENSION_INT_EXT_DIR}" >> ${EXTENSION_INT_EXT_INI}
-			if [ "${SUHOSIN_OPT}" = "yes" ] && [ "${EXTENSION_INT_RELEASE}" != "5.3" ] && [ "${EXTENSION_INT_RELEASE}" != "7.0" ] && [ "${EXTENSION_INT_RELEASE}" != "7.1" ] && [ "${EXTENSION_INT_RELEASE}" != "7.2" ] && [ "${EXTENSION_INT_RELEASE}" != "7.3" ] && [ "${EXTENSION_INT_RELEASE}" != "7.4" ] && [ "${EXTENSION_INT_RELEASE}" != "8.0" ] && [ "${EXTENSION_INT_RELEASE}" != "8.1" ] && [ "${EXTENSION_INT_RELEASE}" != "8.2" ]; then
+			if [ "${SUHOSIN_OPT}" = "yes" ] && [ "${EXTENSION_INT_RELEASE}" != "5.3" ] && [ "${EXTENSION_INT_RELEASE}" != "7.0" ] && [ "${EXTENSION_INT_RELEASE}" != "7.1" ] && [ "${EXTENSION_INT_RELEASE}" != "7.2" ] && [ "${EXTENSION_INT_RELEASE}" != "7.3" ] && [ "${EXTENSION_INT_RELEASE}" != "7.4" ] && [ "${EXTENSION_INT_RELEASE}" != "8.0" ] && [ "${EXTENSION_INT_RELEASE}" != "8.1" ] && [ "${EXTENSION_INT_RELEASE}" != "8.2" ] && [ "${EXTENSION_INT_RELEASE}" != "8.3" ] && [ "${EXTENSION_INT_RELEASE}" != "8.4" ]; then
 				echo "extension=suhosin.so" >> ${EXTENSION_INT_EXT_INI}
 				if [ "${SUHOSIN_PHP_UPLOADSCAN_OPT}" = "yes" ] && [ -e /usr/local/bin/clamdscan ]; then
 					cp -f ${SUHOSIN_PHP_UPLOADSCAN_SCRIPT} ${SUHOSIN_UPLOADSCAN_FILENAME}
@@ -10475,7 +10475,7 @@ doExtensions_build() {
 				fi
 			fi
 
-			if [ "${HTSCANNER_OPT}" = "yes" ] && [ "${EXTENSION_INT_MODE}" != "mod_php" ] && [ "${EXTENSION_INT_MODE}" != "lsphp" ] && [ "${EXTENSION_INT_RELEASE}" != "8.0" ] && [ "${EXTENSION_INT_RELEASE}" != "8.1" ] && [ "${EXTENSION_INT_RELEASE}" != "8.2" ]; then
+			if [ "${HTSCANNER_OPT}" = "yes" ] && [ "${EXTENSION_INT_MODE}" != "mod_php" ] && [ "${EXTENSION_INT_MODE}" != "lsphp" ] && [ "${EXTENSION_INT_RELEASE}" != "8.0" ] && [ "${EXTENSION_INT_RELEASE}" != "8.1" ] && [ "${EXTENSION_INT_RELEASE}" != "8.2" ] && [ "${EXTENSION_INT_RELEASE}" != "8.3" ] && [ "${EXTENSION_INT_RELEASE}" != "8.4" ]; then
 				if [ "${HAVE_CLI}" = "no" ]; then
 					echo "extension=htscanner.so" >> ${EXTENSION_INT_EXT_INI}
 					if [ "${EXTENSION_NAME}" = "htscanner" ] || [ "${EXTENSION_NAME}" = "all" ]; then
@@ -12003,7 +12003,7 @@ doPhp_build() {
 		if grep -m1 -q 'with-iconv=/usr/local' ${CONF_FILE}; then
 			perl -pi -e "s#with-iconv=/usr/local#with-iconv-dir=${LIBICONV_DIR}#g" ${CONF_FILE}
 		fi
-	elif [ "${INT_RELEASE}" = "8.0" ] || [ "${INT_RELEASE}" = "8.1" ] || [ "${INT_RELEASE}" = "8.2" ]; then
+	elif [ "${INT_RELEASE}" = "8.0" ] || [ "${INT_RELEASE}" = "8.1" ] || [ "${INT_RELEASE}" = "8.2" ] || [ "${INT_RELEASE}" = "8.3" ] || [ "${INT_RELEASE}" = "8.4" ]; then
 		if ! grep -m1 -q 'with-iconv' ${CONF_FILE}; then
 			perl -pi -e 's#./configure #./configure --with-iconv=/usr/local #' ${CONF_FILE}
 		fi
@@ -12311,7 +12311,7 @@ doPhp_build() {
 	if [ "${PHP_BZ2_OPT}" = "yes" ]; then
 		doPHPBz2 ${INT_RELEASE} ${INT_MODE} 1
 	fi
-	if [ "${INT_MODE}" != "mod_php" ] && [ "${INT_RELEASE}" != "8.0" ] && [ "${INT_RELEASE}" != "8.1" ] && [ "${INT_RELEASE}" != "8.2" ]; then
+	if [ "${INT_MODE}" != "mod_php" ] && [ "${INT_RELEASE}" != "8.0" ] && [ "${INT_RELEASE}" != "8.1" ] && [ "${INT_RELEASE}" != "8.2" ] && [ "${INT_RELEASE}" != "8.3" ] && [ "${INT_RELEASE}" != "8.4" ]; then
 		if [ "${HTSCANNER_OPT}" = "yes" ]; then
 			doPHPHtscanner ${INT_RELEASE} 1
 		fi
@@ -12326,7 +12326,7 @@ doPhp_build() {
 	fi
 
 	if [ "${SUHOSIN_OPT}" = "yes" ]; then
-		if [ "${INT_RELEASE}" != "5.3" ] && [ "${INT_RELEASE}" != "7.0" ] && [ "${INT_RELEASE}" != "7.1" ] && [ "${INT_RELEASE}" != "7.2" ] && [ "${INT_RELEASE}" != "7.3" ] && [ "${INT_RELEASE}" != "7.4" ] && [ "${INT_RELEASE}" != "8.0" ] && [ "${INT_RELEASE}" != "8.1" ] && [ "${INT_RELEASE}" != "8.2" ]; then
+		if [ "${INT_RELEASE}" != "5.3" ] && [ "${INT_RELEASE}" != "7.0" ] && [ "${INT_RELEASE}" != "7.1" ] && [ "${INT_RELEASE}" != "7.2" ] && [ "${INT_RELEASE}" != "7.3" ] && [ "${INT_RELEASE}" != "7.4" ] && [ "${INT_RELEASE}" != "8.0" ] && [ "${INT_RELEASE}" != "8.1" ] && [ "${INT_RELEASE}" != "8.2" ] && [ "${INT_RELEASE}" != "8.3" ] && [ "${INT_RELEASE}" != "8.4" ]; then
 			doSuhosin ${INT_RELEASE} ${INT_MODE} 1
 		else
 			echo "This suhosin version does not support PHP ${INT_RELEASE}."
